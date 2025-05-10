@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Settings
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <!--Bind this checkbox to the fish mananger services clear database on startup option-->
+      <!-- [(ngModel)] ="fishManager.clearDbOnStartup" -->
+    <ion-checkbox slot="end" >
+    </ion-checkbox>
+    <ion-label> Clear Collection On Startup </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Weight Unit</ion-label>
+      <!-- [(ngModel)] = "fishManager.weightUnit" -->
+      <ion-select >
+          <ion-select-option value="lbs">
+            Pounds (lbs)
+          </ion-select-option>
+          <ion-select-option value="oz">
+            Ounces (oz)
+          </ion-select-option>
+          <ion-select-option value="kg">
+            Kilograms (kg)
+          </ion-select-option>
+          <ion-select-option value="g">
+            Grams (g)
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Measurement System</ion-label>
+        <!-- [(ngModel)] = "fishManager.measurementSystem" -->
+        <ion-select >
+          <ion-select-option value = "m">
+            Metre (m)
+          </ion-select-option>
+          <ion-select-option value = "cm">
+            Centimetre (cm)
+          </ion-select-option>
+          <ion-select-option value = "mm">
+            Millimetre (mm)
+          </ion-select-option>
+          <ion-select-option value = "ft">
+            Feet (ft)
+          </ion-select-option>
+          <ion-select-option value = "in">
+            Inches (in)
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <!-- (click) = "fishManager.saveSettings()" -->
+    <ion-button >
+      <ion-icon slot="end" name="save"></ion-icon>
+      Save Settings
+    </ion-button>
+    <!-- (click) = "fishManager.clearDatabase()" -->
+    <ion-button >
+        <ion-icon slot="end" name="trash"></ion-icon>
+      Clear Database
+    </ion-button>
+
+    <!--Display logo under settings -->
+    <div style="text-align: center;">
+        <img src="assets/FishLogo.png">
+    </div>
+
+</ion-content>

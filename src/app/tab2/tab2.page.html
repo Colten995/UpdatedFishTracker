@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      View Fish
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header><h2>Collected Fish</h2></ion-list-header>
+    <!--Display an ion item for each fish in the fish manager fishes collection -->
+    <!-- <ion-item *ngFor="let fish of fishManager.fishes" (click)="presentFishInformation(fish)"> -->
+      <!-- *ngIf="fish.image" -->
+      <ion-avatar  slot="start">
+        <!-- <ion-img [src]="fish.image"></ion-img> -->
+      </ion-avatar>
+      <ion-label>
+        <!--Display the name of the fish if it has one-->
+        <!-- <h3 *ngIf="fish.name">{{fish.name}}</h3> -->
+        <!-- {{fish.species}} -->
+        <h3>Species: </h3>
+      </ion-label>
+      <!--Tell user they can click on any list item to view details on any fish-->
+      <ion-label slot="end">
+        Tap For More Info
+      </ion-label>
+    <!-- </ion-item> -->
+  </ion-list>
+</ion-content>

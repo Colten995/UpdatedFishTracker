@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Add Fish
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #addToFishCollectionForm ngNoForm>
+    <ion-list>
+      <ion-item>
+        <ion-label>Species</ion-label>
+        <!-- [(ngModel)]="fishToAdd.species -->
+        <ion-input type="text" maxlength="60" minlength="1" required="true"></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-label>Name(Optional)</ion-label>
+          <!-- [(ngModel)]="fishToAdd.name" -->
+          <ion-input type="text" minlength="1" maxlength="30"></ion-input>
+      </ion-item>
+      <ion-item>
+        <!-- <ion-label>Weight ({{ fishManager.weightUnit }})</ion-label> -->
+        <!-- [(ngModel)]="fishToAdd.weight" -->
+        <ion-input type="number" step="any" required="true"></ion-input>
+      </ion-item>
+      <ion-item>
+        <!-- <ion-label>Length ({{ fishManager.measurementSystem}})</ion-label> -->
+        <!-- [(ngModel)]="fishToAdd.length" -->
+        <ion-input type="number" step="any" required="true"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label><b>Fishing Spot</b></ion-label>
+        </ion-item>
+        <ion-item>
+          <!-- [(ngModel)]="fishToAdd.latitude" -->
+          Latitude: <ion-input type="number" step="any" ></ion-input>
+        </ion-item>
+        <ion-item>
+          <!-- [(ngModel)]="fishToAdd.longitude" -->
+          Longitude: <ion-input type="number" step="any"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <!-- (click)="getFishingSpot()" -->
+          <ion-button>Get Location Information</ion-button>
+        </ion-item>
+        <ion-item>
+          <ion-label><b>Picture</b></ion-label>
+        </ion-item>
+        <ion-item>
+          <!-- [(ngModel)]="fishToAdd.image" -->
+          <ion-input readonly></ion-input>
+          <!-- (click)="takePicture()" -->
+          <ion-button>Add Picture</ion-button>
+        </ion-item>
+        <!-- *ngIf="fishToAdd.image" -->
+        <ion-avatar>
+          <!-- [src]="fishToAdd.image" -->
+          <ion-img></ion-img></ion-avatar>
+        <ion-item>
+          <ion-label>Date Caught</ion-label>
+          <!-- [(ngModel)]="fishToAdd.date" -->
+          <ion-datetime pickerFormat="M/D/YYYY h:mm" displayFormat="M/D/YYYY h:mm" ></ion-datetime>
+        </ion-item>
+    <ion-row center>
+      <ion-col text-center>
+        <!-- (click)="validateAndSubmitForm(addToFishCollectionForm)" -->
+        <ion-button >
+          <ion-icon name="add" slot="start"></ion-icon>
+          <ion-label>Add to Collection</ion-label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    </ion-list>
+  </form>
+</ion-content>
