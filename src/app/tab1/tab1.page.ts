@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FishManagerService, Fish} from '../fish-manager.service';
-// import {AlertController} from '@ionic/angular';
+import {AlertController} from '@ionic/angular';
 // import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
 // import { Geolocation } from '@ionic-native/geolocation/ngx';
 
@@ -39,10 +39,10 @@ export class Tab1Page {
   /*It's required to initialize all of these classes in the ctor to use them. Angular determines which dependencies this component needs
   by looking at the constructor of the component */
   
-    // private alertController : AlertController,
     // private camera : Camera,
     // private geoLocation : Geolocation
-  constructor(public fishManager: FishManagerService) {
+  constructor(public fishManager: FishManagerService, 
+    private alertController: AlertController) {
       }
 
   //  public getFishingSpot()
@@ -78,7 +78,7 @@ export class Tab1Page {
   // }
 
   public async validateAndSubmitForm(form: HTMLFormElement) {
-    // let alert;
+    let successAlert;
     if (form.reportValidity()) {
       this.fishManager.addToCollection(this.fishToAdd);
       //Debug message -- remove later
@@ -96,11 +96,11 @@ export class Tab1Page {
           date: new Date().toLocaleString('en-US', {timeZone : 'UTC'}),
           name: ""
         };
-        // alert = await this.alertController.create({
-        //   message: 'Fish succesfully added to collection',
-        //   buttons: ['OK']
-        // });
-        // alert.present();
+        successAlert = await this.alertController.create({
+          message: 'Fish succesfully added to collection',
+          buttons: ['OK']
+        });
+        successAlert.present();
       }
   }
 }

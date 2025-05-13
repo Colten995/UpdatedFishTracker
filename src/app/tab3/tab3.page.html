@@ -10,15 +10,15 @@
   <ion-list>
     <ion-item>
       <!--Bind this checkbox to the fish mananger services clear database on startup option-->
-      <!-- [(ngModel)] ="fishManager.clearDbOnStartup" -->
-    <ion-checkbox slot="end" >
+      <!--  -->
+    <ion-checkbox slot="end" [(ngModel)] ="fishManager.clearDbOnStartup">
     </ion-checkbox>
     <ion-label> Clear Collection On Startup </ion-label>
     </ion-item>
     <ion-item>
       <ion-label>Weight Unit</ion-label>
-      <!-- [(ngModel)] = "fishManager.weightUnit" -->
-      <ion-select >
+      <!--  -->
+      <ion-select [(ngModel)] = "fishManager.weightUnit">
           <ion-select-option value="lbs">
             Pounds (lbs)
           </ion-select-option>
@@ -35,8 +35,8 @@
       </ion-item>
       <ion-item>
         <ion-label>Measurement System</ion-label>
-        <!-- [(ngModel)] = "fishManager.measurementSystem" -->
-        <ion-select >
+        <!--  -->
+        <ion-select [(ngModel)] = "fishManager.measurementSystem">
           <ion-select-option value = "m">
             Metre (m)
           </ion-select-option>
