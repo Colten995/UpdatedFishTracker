@@ -21,7 +21,7 @@ export class Tab2Page {
         //   Date Caught: ${fishToPresent.date}`);
       const fishInformationAlert = await this.alertController.create(
         {
-          /*TODO figure out how to add new lines in an alert controller message.
+          /*TODO figure out how to add new lines in an alert controller message. May require switching to a modal or newer alert
           https://stackoverflow.com/questions/61129651/html-tags-are-not-working-in-ionic-5-alert-text/61130342#61130342 
           How do I enable innerHtmlTemplates? https://github.com/ionic-team/ionic-framework/issues/27118#issuecomment-1497470528 
           Setting InnerHtmlTemplatesEnabled to true in ionic.config.json is supposed to fix this, but doesn't: 

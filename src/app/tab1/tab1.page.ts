@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {FishManagerService, Fish} from '../fish-manager.service';
 import {AlertController} from '@ionic/angular';
 // import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
-// import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Geolocation } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-tab1',
@@ -40,26 +40,36 @@ export class Tab1Page {
   by looking at the constructor of the component */
   
     // private camera : Camera,
-    // private geoLocation : Geolocation
+    // 
   constructor(public fishManager: FishManagerService, 
     private alertController: AlertController) {
       }
 
-  //  public getFishingSpot()
-  //   {
-  //     //use an async call to get the current position with the GeoLocation plugin
-  //     this.geoLocation.getCurrentPosition().then((response) => {
-  //       this.fishToAdd.latitude = response.coords.latitude;
-  //       this.fishToAdd.longitude = response.coords.longitude;
-  //       //Display an error alert box if the current position can't be retrieved
-  //      }).catch( async (error) => {
-  //        const errorAlert = await this.alertController.create({
-  //          message : 'Error getting location' + error,
-  //          buttons: ['OK']
-  //        });
-  //        errorAlert.present();
-  //      });
-  //   }
+      //**Make sure to enable location permissions in android and ios when you set them up 
+      // https://ionicframework.com/docs/native/geolocation#getcurrentposition  */
+   public async getFishingSpot()
+    {
+      let options: PositionOptions = {
+        maximumAge: 3000,
+        timeout: 10000,
+        enableHighAccuracy: true
+      }
+      //use an async call to get the current position with the GeoLocation plugin
+      const position = await Geolocation.getCurrentPosition(options);
+      console.log(position);
+
+      // .then((response) => {
+      //   this.fishToAdd.latitude = response.coords.latitude;
+      //   this.fishToAdd.longitude = response.coords.longitude;
+      //   //Display an error alert box if the current position can't be retrieved
+      //  }).catch( async (error) => {
+      //    const errorAlert = await this.alertController.create({
+      //      message : 'Error getting location' + error,
+      //      buttons: ['OK']
+      //    });
+      //    errorAlert.present();
+      //  });
+    }
     
   //  public takePicture()
   //   {
