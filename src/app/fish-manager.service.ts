@@ -103,7 +103,7 @@ export interface Fish{
   length : number,
   latitude : any,
   longitude : any,
-  image: string,
+  image: any,
   date : string,
   name? : string
 }

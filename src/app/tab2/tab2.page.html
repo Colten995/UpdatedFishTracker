@@ -11,9 +11,9 @@
     <ion-list-header><h2>Collected Fish</h2></ion-list-header>
     <!--Display an ion item for each fish in the fish manager fishes collection -->
     <ion-item *ngFor="let fish of fishManager.fishes" (click)="presentFishInformation(fish)">
-      <!-- *ngIf="fish.image" -->
-      <ion-avatar  slot="start">
-        <!-- <ion-img [src]="fish.image"></ion-img> -->
+      <!--  -->
+      <ion-avatar *ngIf="fish.image" slot="start">
+        <ion-img [src]="fish.image"></ion-img>
       </ion-avatar>
       <ion-label>
         <!--Display the name of the fish if it has one-->

@@ -47,19 +47,22 @@
           <ion-label><b>Picture</b></ion-label>
         </ion-item>
         <ion-item>
-          <!-- [(ngModel)]="fishToAdd.image" -->
-          <ion-input readonly></ion-input>
-          <!-- (click)="takePicture()" -->
-          <ion-button>Add Picture</ion-button>
+          <!--  -->
+          <ion-input readonly [(ngModel)]="fishToAdd.image"></ion-input>
+          <!--  -->
+          <ion-button (click)="takePicture()">Add Picture</ion-button>
         </ion-item>
-        <!-- *ngIf="fishToAdd.image" -->
-        <ion-avatar>
-          <!-- [src]="fishToAdd.image" -->
-          <ion-img></ion-img></ion-avatar>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6">
+              <ion-img size='small' *ngIf="fishToAdd.image" [src]="fishToAdd.image"></ion-img>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
         <ion-item>
           <ion-label>Date Caught: </ion-label>
-          <!--  -->
-          <ion-datetime pickerFormat="M/D/YYYY h:mm" displayFormat="M/D/YYYY h:mm" [(ngModel)]="fishToAdd.date"></ion-datetime>
+          <!--TODO date picker doesn't initialize with todays date  -->
+          <ion-datetime value="{{ today }}" pickerFormat="M/D/YYYY h:mm" displayFormat="M/D/YYYY h:mm" [(ngModel)]="fishToAdd.date"></ion-datetime>
         </ion-item>
     <ion-row center>
       <ion-col text-center>

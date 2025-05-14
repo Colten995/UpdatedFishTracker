@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {FishManagerService, Fish} from '../fish-manager.service';
 import {AlertController} from '@ionic/angular';
-// import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
+import {Camera, CameraResultType, CameraSource, ImageOptions, Photo} from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
 
 @Component({
@@ -12,6 +12,8 @@ import { Geolocation } from '@capacitor/geolocation';
   standalone: false
 })
 export class Tab1Page {
+
+  today = Date.now();
 
   /*The model for each fish caught includes:
     Species : the species of the fish ex: Bass
@@ -43,6 +45,7 @@ export class Tab1Page {
     // 
   constructor(public fishManager: FishManagerService, 
     private alertController: AlertController) {
+      console.log(this.fishToAdd);
       }
 
       //**Make sure to enable location permissions in android and ios when you set them up 
@@ -55,37 +58,46 @@ export class Tab1Page {
         enableHighAccuracy: true
       }
       //use an async call to get the current position with the GeoLocation plugin
-      const position = await Geolocation.getCurrentPosition(options);
-      console.log(position);
 
-      // .then((response) => {
-      //   this.fishToAdd.latitude = response.coords.latitude;
-      //   this.fishToAdd.longitude = response.coords.longitude;
-      //   //Display an error alert box if the current position can't be retrieved
-      //  }).catch( async (error) => {
-      //    const errorAlert = await this.alertController.create({
-      //      message : 'Error getting location' + error,
-      //      buttons: ['OK']
-      //    });
-      //    errorAlert.present();
-      //  });
+      //call the get current position function to retrieve the location information
+      //then once the information is retrieved set the latitude and longitude of the current fish
+      Geolocation.getCurrentPosition().then((response) => {
+        this.fishToAdd.latitude = response.coords.latitude;
+        this.fishToAdd.longitude = response.coords.longitude;
+        //Display an error alert box if the current position can't be retrieved
+       }).catch( async (error) => {
+         const errorAlert = await this.alertController.create({
+           message : 'Error getting location' + error,
+           buttons: ['OK']
+         });
+         errorAlert.present();
+       });
     }
     
-  //  public takePicture()
-  //   {
-  //     const options: CameraOptions = {
-  //       quality: 100,
-  //       destinationType: this.camera.DestinationType.DATA_URL,
-  //       targetHeight: 100,
-  //       targetWidth: 100,
-  //       encodingType: this.camera.EncodingType.JPEG,
-  //       mediaType: this.camera.MediaType.PICTURE
-  //     };
-  //   this.camera.getPicture(options).then((imageData) => {
-  //    this.fishToAdd.image = "data:image/jpeg;base64," + imageData;
-  //   }, (err) => {
-  //   });
-  // }
+   public async takePicture()
+    {
+
+      const options: ImageOptions = {
+        quality: 100,
+        resultType: CameraResultType.Uri,
+        allowEditing: true,
+        source: CameraSource.Camera
+      };
+
+      // const photo = await Camera.getPhoto(options);
+      //without the "!" the compiler thinks this is undefined, but it is not , The "!" is very important!!!
+      // this.fishToAdd.image = photo.webPath!
+    await Camera.getPhoto(options).then((imageData) => {
+     this.fishToAdd.image = imageData.webPath!;
+     console.log(this.fishToAdd);
+    }, async (err) => {
+      const errorAlert = await this.alertController.create({
+        message : 'Error getting photo' + err,
+        buttons: ['OK']
+      });
+      errorAlert.present();
+    });
+  }
 
   public async validateAndSubmitForm(form: HTMLFormElement) {
     let successAlert;
