@@ -41,8 +41,7 @@ export class Tab1Page {
   /*It's required to initialize all of these classes in the ctor to use them. Angular determines which dependencies this component needs
   by looking at the constructor of the component */
   
-    // private camera : Camera,
-    // 
+  //*** */ Why does this only need some plugins and not others like geolocation?***
   constructor(public fishManager: FishManagerService, 
     private alertController: AlertController,) {
       console.log(this.fishToAdd);
