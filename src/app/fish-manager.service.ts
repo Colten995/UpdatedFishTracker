@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-// import {Storage} from '@ionic/storage';
+import {Preferences} from '@capacitor/preferences';
 import {AlertController} from '@ionic/angular';
 
 //This is the key that will have the settings values
@@ -18,59 +18,83 @@ export class FishManagerService {
   weightUnit: string = 'lbs';
   measurementSystem = 'in';
   fishes: Array<Fish> = [];
-
-  // private storage: Storage,
-    // private alertController : AlertController
-  constructor() 
+    
+  constructor(private alertController : AlertController) 
   {
-    // this.initialize();
+    this.initialize();
+  }
+
+  /*This is one way to do this, but I found an easier way. This way is the only way to do it if we have
+  to get multiple values from preferences*/
+  /*The Preferences API get function always returns a GetResult which is a promise, so we have to get the inner string out of that 
+  promise by putting the Preferences get call into a function that returns a promise which resolves as a string instead of type any
+  The "Promise<string>" is a type annotation that declares what type the promise needs to resolve to*/
+  private async getString(k: string): Promise<string> {
+    const ret = await Preferences.get({ key: k });
+    return (ret.value || '');
   }
 
   //Initialize the fish manager
-  // public async initialize()
-  // {
-  //   //Get the settings from the db and assign it to the setting object
-  //  const settings = await this.storage.get(SETTINGSKEY);
-  //  let savedFishes = await this.storage.get(FISHKEY);
+  public async initialize()
+  {
+    /*Easiest way to get values from the Preferences storage */
+    // const { value } = await Preferences.get({key: FISHKEY});
+    // this.fishes = (value ? JSON.parse(value): []) as Fish[];
+    // console.log(this.fishes);
 
-  //  //Make sure settings is not null
-  //  if (settings)
-  //  {
-  //     this.clearDbOnStartup = settings.clearDbOnStartup;
-  //     this.weightUnit = settings.weightUnit;
-  //     this.measurementSystem = settings.measurementSystem;
-  //     if (this.clearDbOnStartup)
-  //     {
-  //      this.clearDatabase();
-  //      savedFishes = [];
-  //     }
-  //  }
-  //  if (savedFishes)
-  //  {
-  //    this.fishes = savedFishes;
-  //  }
+  //Get fishes from the DB
+  let savedFishes = await this.getString(FISHKEY);
+
+   //Check if there are any fishes
+   if (savedFishes)
+   {
+     this.fishes = JSON.parse(savedFishes);
+     console.log(this.fishes);
+   }
+
+   let settingsString = await this.getString(SETTINGSKEY);
+
+   //Make sure settings is not null
+   if (settingsString)
+   {
+    //create a throwaway object to parse the string into
+    const settings : Settings = JSON.parse(settingsString);
+      this.clearDbOnStartup = settings.clearDbOnStartup;
+      this.weightUnit = settings.weightUnit;
+      this.measurementSystem = settings.measurementSystem;
+      if (this.clearDbOnStartup)
+      {
+      //  this.clearDatabase();
+       savedFishes = '';
+      }
+   }
+
+  }
+
+
+
 
   // }
 
-  //Saves the new settings to the db
-  // public async saveSettings()
-  // {
-  //   const savedAlert = await this.alertController.create(
-  //     {
-  //       message: 'Settings saved',
-  //       buttons:['OK']
-  //     }
-  //   )
-  //   //Make a new object for the new settings
-  //   const newSettings =
-  //   {
-  //     clearDbOnStartup : this.clearDbOnStartup,
-  //     weightUnit : this.weightUnit,
-  //     measurementSystem : this.measurementSystem
-  //   }
-  //   this.storage.set(SETTINGSKEY, newSettings);
-  //   savedAlert.present();
-  // }
+  // Saves the new settings to the db
+  public async saveSettings()
+  {
+    const savedAlert = await this.alertController.create(
+      {
+        message: 'Settings saved',
+        buttons:['OK']
+      }
+    )
+    //Make a new object for the new settings
+    const newSettings =
+    {
+      clearDbOnStartup : this.clearDbOnStartup,
+      weightUnit : this.weightUnit,
+      measurementSystem : this.measurementSystem
+    }
+    Preferences.set({key : SETTINGSKEY, value: JSON.stringify(newSettings)});
+    savedAlert.present();
+  }
 
   /*
     Clears the database and logs the fish that were cleared
@@ -91,7 +115,7 @@ export class FishManagerService {
   public addToCollection(fishToAdd: Fish)
   {
         this.fishes.push(fishToAdd);
-        // this.storage.set(FISHKEY, this.fishes);
+        Preferences.set({key: FISHKEY,value: JSON.stringify(this.fishes)});
   }
 
 }
@@ -106,4 +130,10 @@ export interface Fish{
   image: any,
   date : string,
   name? : string
+}
+
+export interface Settings{
+  clearDbOnStartup: boolean;
+  weightUnit: string;
+  measurementSystem: string;
 }

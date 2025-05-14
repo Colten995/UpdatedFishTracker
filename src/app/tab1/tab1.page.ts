@@ -44,7 +44,7 @@ export class Tab1Page {
     // private camera : Camera,
     // 
   constructor(public fishManager: FishManagerService, 
-    private alertController: AlertController) {
+    private alertController: AlertController,) {
       console.log(this.fishToAdd);
       }
 
