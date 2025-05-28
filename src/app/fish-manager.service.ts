@@ -64,8 +64,8 @@ export class FishManagerService {
       this.measurementSystem = settings.measurementSystem;
       if (this.clearDbOnStartup)
       {
-      //  this.clearDatabase();
-       savedFishes = '';
+       this.clearDatabase();
+      //  savedFishes = '';
       }
    }
 
@@ -97,20 +97,20 @@ export class FishManagerService {
   }
 
   /*
-    Clears the database and logs the fish that were cleared
+    Deletes the preferences value for the fish list, and notifies the user that the list was cleared
   */
-  // public async clearDatabase()
-  // {
-  //   const clearAlert = await this.alertController.create(
-  //     {
-  //       message: 'Collection cleared',
-  //       buttons:['OK']
-  //     }
-  //   )
-  //   this.storage.remove(FISHKEY);
-  //   this.fishes = [];
-  //   clearAlert.present();
-  // }
+  public async clearDatabase()
+  {
+    const clearAlert = await this.alertController.create(
+      {
+        message: 'Collection cleared',
+        buttons:['OK']
+      }
+    )
+    await Preferences.remove({ key: FISHKEY});
+    this.fishes = [];
+    clearAlert.present();
+  }
 
   public addToCollection(fishToAdd: Fish)
   {
