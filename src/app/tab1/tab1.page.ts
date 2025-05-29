@@ -3,6 +3,7 @@ import {FishManagerService, Fish} from '../fish-manager.service';
 import {AlertController} from '@ionic/angular';
 import {Camera, CameraResultType, CameraSource, ImageOptions, Photo} from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
+import { Filesystem, Directory} from '@capacitor/filesystem';
 
 @Component({
   selector: 'app-tab1',
@@ -40,7 +41,6 @@ export class Tab1Page {
   /*It's required to initialize all of these classes in the ctor to use them. Angular determines which dependencies this component needs
   by looking at the constructor of the component */
   
-  //*** */ Why does this only need some plugins and not others like geolocation?***
   constructor(public fishManager: FishManagerService, 
     private alertController: AlertController,) {
       console.log(this.fishToAdd);
@@ -87,17 +87,56 @@ export class Tab1Page {
       // const photo = await Camera.getPhoto(options);
       //without the "!" the compiler thinks this is undefined, but it is not , The "!" is very important!!!
       // this.fishToAdd.image = photo.webPath!
-    await Camera.getPhoto(options).then((imageData) => {
-     this.fishToAdd.image = imageData.webPath!;
-     console.log(this.fishToAdd);
-    }, async (err) => {
-      const errorAlert = await this.alertController.create({
-        message : 'Error getting photo' + err,
-        buttons: ['OK']
-      });
-      errorAlert.present();
-    });
+
+      //Have to include this somehow
+    //   .then((imageData) => {
+    // }, async (err) => {
+    //   const errorAlert = await this.alertController.create({
+    //     message : 'Error getting photo' + err,
+    //     buttons: ['OK']
+    //   });
+    //   errorAlert.present();
+    // });
+    const capturedPhoto = await Camera.getPhoto(options);
+
+    this.fishToAdd.image = (await this.savePicture(capturedPhoto)).filepath;
   }
+
+  private async savePicture(photo: Photo)
+  {
+    const base64Data = await this.readAsBase64(photo);
+    const fileName = Date.now() + '.jpeg';
+
+    const savedFile = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: Directory.Data
+    });
+
+    return {
+      filepath: fileName,
+      webviewPath: photo.webPath
+    };
+  }
+
+  private async readAsBase64(photo: Photo) {
+    // Fetch the photo, read as a blob, then convert to base64 format
+    //fetch() makes a request to the server to get the image and returns a promise that resolves to the response to the request
+    const response = await fetch(photo.webPath!);
+    //blob() returns the blob representation of the response body
+    const blob = await response.blob();
+
+    return await this.convertBlobToBase64(blob) as string;
+  }
+
+  private convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+        resolve(reader.result);
+    };
+    reader.readAsDataURL(blob);
+  });
 
   public async validateAndSubmitForm(form: HTMLFormElement) {
     let successAlert;
