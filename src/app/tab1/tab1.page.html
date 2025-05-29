@@ -62,8 +62,10 @@
         </ion-grid>
         <ion-item>
           <ion-label>Date Caught: </ion-label>
-          <!--TODO date picker doesn't initialize with todays date  -->
-          <ion-datetime value="{{ today }}" pickerFormat="M/D/YYYY h:mm" displayFormat="M/D/YYYY h:mm" [(ngModel)]="fishToAdd.date"></ion-datetime>
+          <!--Have to ensure date time is in the right format to show the correct date
+          https://ionicframework.com/docs/api/datetime#value : "The value of the datetime as a valid ISO 8601 datetime string. 
+          This should be an array of strings only when multiple="true"."  -->
+          <ion-datetime [(ngModel)]="fishToAdd.date"></ion-datetime>
         </ion-item>
     <ion-row center>
       <ion-col text-center>

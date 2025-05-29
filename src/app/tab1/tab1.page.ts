@@ -12,8 +12,7 @@ import { Geolocation } from '@capacitor/geolocation';
   standalone: false
 })
 export class Tab1Page {
-
-  today = Date.now();
+//  todayISO: string = new Date().toISOString();
 
   /*The model for each fish caught includes:
     Species : the species of the fish ex: Bass
@@ -34,7 +33,7 @@ export class Tab1Page {
     latitude: 0,
     longitude: 0,
     image:"",
-    date: new Date().toLocaleString('en-US', {timeZone : 'UTC'}),
+    date: "",
     name: ""
   };
 
@@ -45,6 +44,8 @@ export class Tab1Page {
   constructor(public fishManager: FishManagerService, 
     private alertController: AlertController,) {
       console.log(this.fishToAdd);
+      
+      console.log(new Date().toISOString());
       }
 
       //**Make sure to enable location permissions in android and ios when you set them up 
@@ -114,7 +115,7 @@ export class Tab1Page {
           latitude:0,
           longitude:0,
           image:"",
-          date: new Date().toLocaleString('en-US', {timeZone : 'UTC'}),
+          date: "",
           name: ""
         };
         successAlert = await this.alertController.create({
